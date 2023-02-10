@@ -4,6 +4,8 @@ import listEndpoints from "express-list-endpoints";
 import mongoose from "mongoose";
 import postRouter from "./api/blog/index.js";
 import usersRouter from "./api/user/index.js";
+import passport from "passport";
+import googleStrategy from "./lib/auth/google.js";
 import {
   forbiddenErrorHandler,
   genericErroHandler,
@@ -13,10 +15,12 @@ import {
 
 const server = express();
 const port = process.env.PORT || 3001;
+passport.use("google", googleStrategy);
 
 //.....................middleware......................
 server.use(cors());
 server.use(express.json());
+server.use(passport.initialize());
 ///........................endpoints...................
 
 server.use("/post", postRouter);
